@@ -2,86 +2,6 @@
 
 import UIKit
 
-// This code to generate 64-bit unsigned integer is broken.The Yijing oracle will revert to `arc4random_uniform(Int32)`.
-/*
- //: Taken from [How does one generate a random number in Apple's Swift language? - Stack Overflow](http://stackoverflow.com/questions/24007129/how-does-one-generate-a-random-number-in-apples-swift-language)
- 
- public func arc4random<T: ExpressibleByIntegerLiteral>(_ type: T.Type) -> T {
- var r: T = 0
- arc4random_buf(&r, MemoryLayout<T>.size)
- return r
- }
- 
- public extension UInt64 {
- public static func random(lowerBound: UInt64 = min, upperBound: UInt64 = max) -> UInt64 {
- var m: UInt64
- let u = upperBound - lowerBound
- var r = arc4random(UInt64.self)
- 
- if u > UInt64(Int64.max) {
- m = 1 + ~u
- } else {
- m = ((max - (u * 2)) + 1) % u
- }
- 
- while r < m {
- r = arc4random(UInt64.self)
- }
- 
- return (r % u) + lowerBound
- }
- }
- 
- public extension Int64 {
- public static func random(lowerBound: Int64 = min, upperBound: Int64 = max) -> Int64 {
- let (s, overflow) = Int64.subtractWithOverflow(upperBound, lowerBound)
- let u = overflow ? UInt64.max - UInt64(~s) : UInt64(s)
- let r = UInt64.random(upperBound: u)
- 
- if r > UInt64(Int64.max)  {
- return Int64(r - (UInt64(~lowerBound) + 1))
- } else {
- return Int64(r) + lowerBound
- }
- }
- }
- 
- private let _wordSize = __WORDSIZE
- 
- public extension UInt32 {
- public static func random(lowerBound: UInt32 = min, upperBound: UInt32 = max) -> UInt32 {
- return arc4random_uniform(upperBound - lowerBound) + lowerBound
- }
- }
- 
- public extension Int32 {
- public static func random(lowerBound: Int32 = min, upperBound: Int32 = max) -> Int32 {
- let r = arc4random_uniform(UInt32(Int64(upperBound) - Int64(lowerBound)))
- return Int32(Int64(r) + Int64(lowerBound))
- }
- }
- 
- public extension UInt {
- public static func random(lowerBound: UInt = min, upperBound: UInt = max) -> UInt {
- switch (_wordSize) {
- case 32: return UInt(UInt32.random(lowerBound: UInt32(lowerBound), upperBound: UInt32(upperBound)))
- case 64: return UInt(UInt64.random(lowerBound: UInt64(lowerBound), upperBound: UInt64(upperBound)))
- default: return lowerBound
- }
- }
- }
- 
- public extension Int {
- public static func random(lowerBound: Int = min, upperBound: Int = max) -> Int {
- switch (_wordSize) {
- case 32: return Int(Int32.random(lowerBound: Int32(lowerBound), upperBound: Int32(upperBound)))
- case 64: return Int(Int64.random(lowerBound: Int64(lowerBound), upperBound: Int64(upperBound)))
- default: return lowerBound
- }
- }
- }
- */
-
 class DateAndTime {
     let date = Date()
     let dateFormat = DateFormatter()
@@ -102,14 +22,14 @@ class DateAndTime {
     
     
     func currentDateAndTime () -> String {
-        if hour.characters.count == 1 {
-            hour.characters.insert("0", at: hour.characters.startIndex)
+        if hour.count == 1 {
+            hour.insert("0", at: hour.startIndex)
         }
-        if minutes.characters.count == 1 {
-            minutes.characters.insert("0", at: hour.characters.startIndex)
+        if minutes.count == 1 {
+            minutes.insert("0", at: hour.startIndex)
         }
-        if seconds.characters.count == 1 {
-            seconds.characters.insert("0", at: hour.characters.startIndex)
+        if seconds.count == 1 {
+            seconds.insert("0", at: hour.startIndex)
         }
         
         currentTime = "\(hour):\(minutes):\(seconds)"
@@ -406,9 +326,9 @@ struct 本卦 {
         for 爻數 in [六爻結構.初爻, 六爻結構.二爻, 六爻結構.三爻, 六爻結構.四爻, 六爻結構.五爻, 六爻結構.上爻] {
             switch 爻數 {
             case .六, .八:
-                陰陽屬性卦象數組.characters.append("陰")
+                陰陽屬性卦象數組.append("陰")
             case .七, .九:
-                陰陽屬性卦象數組.characters.append("陽")
+                陰陽屬性卦象數組.append("陽")
             }
         }
         return 陰陽屬性卦象數組
@@ -433,9 +353,9 @@ struct 之卦 {
         for 爻數 in [六爻結構.初爻, 六爻結構.二爻, 六爻結構.三爻, 六爻結構.四爻, 六爻結構.五爻, 六爻結構.上爻] {
             switch 爻數 {
             case .八, .九:
-                陰陽屬性卦象數組.characters.append("陰")
+                陰陽屬性卦象數組.append("陰")
             case .六, .七:
-                陰陽屬性卦象數組.characters.append("陽")
+                陰陽屬性卦象數組.append("陽")
             }
         }
         return 陰陽屬性卦象數組
