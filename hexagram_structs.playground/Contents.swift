@@ -54,7 +54,6 @@ struct 象兩 {
     
     // 「分而為二以象兩」
     func 分而為二() -> 兩 {
-        //let 分左 = UInt64.random(lowerBound: 1, upperBound: 蓍草之數 - 象三.掛一)
         let 分左 = UInt64(1 + arc4random_uniform(UInt32(蓍草之數 - 象三.掛一) - 1))
         /*:
          # Floor & Ceiling Values for Stalks at the Beginning of Each Round
