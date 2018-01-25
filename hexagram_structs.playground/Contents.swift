@@ -1,6 +1,7 @@
 //: Hexagram Structures v6.3
 
 import UIKit
+import PlaygroundSupport
 
 class DateAndTime {
     let date = Date()
@@ -8,34 +9,50 @@ class DateAndTime {
     let calendar = NSCalendar.current
     let currentDate: String
     var hour: String
-    var minutes: String
-    var seconds: String
+    var minute: String
+    var second: String
     var currentTime: String = ""
     
     init() {
         dateFormat.dateFormat = "yyyy-MM-dd"
         self.currentDate = dateFormat.string(from: date)
         self.hour = String(calendar.component(.hour, from: date as Date))
-        self.minutes = String(calendar.component(.minute, from: date as Date))
-        self.seconds = String(calendar.component(.second, from: date as Date))
-    }
-    
-    
-    func currentDateAndTime () -> String {
+        self.minute = String(calendar.component(.minute, from: date as Date))
+        self.second = String(calendar.component(.second, from: date as Date))
+        
         if hour.count == 1 {
             hour.insert("0", at: hour.startIndex)
         }
-        if minutes.count == 1 {
-            minutes.insert("0", at: hour.startIndex)
+        if minute.count == 1 {
+            minute.insert("0", at: minute.startIndex)
         }
-        if seconds.count == 1 {
-            seconds.insert("0", at: hour.startIndex)
+        if second.count == 1 {
+            second.insert("0", at: second.startIndex)
         }
-        
-        currentTime = "\(hour):\(minutes):\(seconds)"
+    }
+    
+    func string() -> String {
+        currentTime = "\(hour):\(minute):\(second)"
         return "\(currentDate), \(currentTime)\n"
     }
     
+    func fileName() -> String {
+        currentTime = "\(hour).\(minute).\(second)"
+        return "\(currentDate)_\(currentTime)"
+    }
+}
+
+// Output directory is at `~/Documents/Shared\ Playground\ Data`
+let directory = PlaygroundSupport.playgroundSharedDataDirectory
+let path = directory.appendingPathComponent("\(DateAndTime().fileName()).md")
+var output = ""
+
+func outputToFile() {
+    do {
+        try output.write(to: path, atomically: true, encoding: String.Encoding.utf8)
+    } catch let error as NSError {
+        print("Error: \(error.localizedDescription)")
+    }
 }
 
 //: Structures for Pre-divination and Divination
@@ -296,21 +313,29 @@ struct 筮卦 {
             // 筮卦靜態圖
             //// Does not contain any 6 or 9.
             print("```")
+            output += "```\n"
             for index in 0...5 {
                 print(爻位數組[5-index].rawValue + 靜態圖數據數組![5-index].rawValue)
+                output += 爻位數組[5-index].rawValue + 靜態圖數據數組![5-index].rawValue + "\n"
             }
             print("```")
+            output += "```\n\n"
             print("【\(設本卦().卦序)、\(設本卦().卦名)。】")
+            output += "【\(設本卦().卦序)、\(設本卦().卦名)。】\n"
             return
         }
         // 筮卦轉變圖
         //// Contains at least one 6 or 9.
         print("```")
+        output += "```\n"
         for index in 0...5 {
             print(爻位數組[5-index].rawValue + 轉變圖數據數組![5-index].rawValue)
+            output += (爻位數組[5-index].rawValue + 轉變圖數據數組![5-index].rawValue + "\n")
         }
         print("```")
+        output += "```\n\n"
         print("【\(設本卦().卦序)、\(設本卦().卦名)】之【\(設之卦()!.卦序)、\(設之卦()!.卦名)】。")
+        output += "【\(設本卦().卦序)、\(設本卦().卦名)】之【\(設之卦()!.卦序)、\(設之卦()!.卦名)】。\n"
     }
 }
 
@@ -400,7 +425,9 @@ func 卜筮全程(問 問題: String) -> 六爻? {
         return nil
     }
     print("# " + 問題 + "\n")
-    print(DateAndTime().currentDateAndTime())
+    output += "# " + 問題 + "\n\n"
+    print(DateAndTime().string())
+    output += DateAndTime().string() + "\n"
     
     var 筮得爻數數組 = Array<UInt64>()
     
@@ -424,4 +451,5 @@ let 問題: String = ""
 if let 卜筮全程 = 卜筮全程(問: 問題) {
     let 卜筮結果 = 筮卦(六爻結構: 卜筮全程)
     卜筮結果.屏幕顯示()
+    outputToFile()
 }
