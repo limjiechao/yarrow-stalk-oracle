@@ -1,4 +1,4 @@
-# Swift Yarrow Stalk Oracle
+# Yarrow Stalk Oracle in Swift Playground
 
 This is a Swift playground implementation of the yarrow stalk oracle using the `arc4random_uniform` random number generator. 
 
