@@ -312,29 +312,21 @@ struct 筮卦 {
         guard 爻數數組.contains(.六) || 爻數數組.contains(.九) else {
             // 筮卦靜態圖
             //// Does not contain any 6 or 9.
-            print("```")
             output += "```\n"
             for index in 0...5 {
-                print(爻位數組[5-index].rawValue + 靜態圖數據數組![5-index].rawValue)
                 output += 爻位數組[5-index].rawValue + 靜態圖數據數組![5-index].rawValue + "\n"
             }
-            print("```")
             output += "```\n\n"
-            print("【\(設本卦().卦序)、\(設本卦().卦名)。】")
             output += "【\(設本卦().卦序)、\(設本卦().卦名)。】\n"
             return
         }
         // 筮卦轉變圖
         //// Contains at least one 6 or 9.
-        print("```")
         output += "```\n"
         for index in 0...5 {
-            print(爻位數組[5-index].rawValue + 轉變圖數據數組![5-index].rawValue)
             output += (爻位數組[5-index].rawValue + 轉變圖數據數組![5-index].rawValue + "\n")
         }
-        print("```")
         output += "```\n\n"
-        print("【\(設本卦().卦序)、\(設本卦().卦名)】之【\(設之卦()!.卦序)、\(設之卦()!.卦名)】。")
         output += "【\(設本卦().卦序)、\(設本卦().卦名)】之【\(設之卦()!.卦序)、\(設之卦()!.卦名)】。\n"
     }
 }
@@ -424,9 +416,7 @@ func 卜筮全程(問 問題: String) -> 六爻? {
         print("To start consultation, enter your question and end it with a \"?\".")
         return nil
     }
-    print("# " + 問題 + "\n")
     output += "# " + 問題 + "\n\n"
-    print(DateAndTime().string())
     output += DateAndTime().string() + "\n"
     
     var 筮得爻數數組 = Array<UInt64>()
@@ -451,5 +441,6 @@ let 問題: String = ""
 if let 卜筮全程 = 卜筮全程(問: 問題) {
     let 卜筮結果 = 筮卦(六爻結構: 卜筮全程)
     卜筮結果.屏幕顯示()
+    print(output)
     outputToFile()
 }
